@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Suite - Advanced Encryption & Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles-background">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Page Title -->
+        <div class="page-title-section">
+            <h1 class="page-title">
+                <span class="title-gradient">Cyber Security</span>
+                <span class="title-accent">Suite</span>
+            </h1>
+            <p class="page-subtitle">Advanced File Encryption & Malware Analysis Platform</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Encryption Section -->
+            <div class="card encrypt-card">
+                <div class="card-header">
+                    <h2>🔒 Encrypt File</h2>
+                </div>
+                <div class="card-body">
+                    <div class="file-upload-area" id="encryptUploadArea">
+                        <input type="file" id="encryptFile" class="file-input" />
+                        <div class="upload-content">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p>Click to select file or drag and drop</p>
+                            <span class="file-name" id="encryptFileName"></span>
+                        </div>
+                    </div>
+                    <div class="algorithm-select">
+                        <label for="encryptAlgorithm">Encryption Algorithm:</label>
+                        <select id="encryptAlgorithm" class="algorithm-select-input">
+                            <optgroup label="AES-CBC (Block Cipher)">
+                                <option value="aes-256-cbc">AES-256-CBC (Recommended - Highest Security)</option>
+                                <option value="aes-192-cbc">AES-192-CBC (Balanced)</option>
+                                <option value="aes-128-cbc">AES-128-CBC (Fast)</option>
+                            </optgroup>
+                            <optgroup label="AES-GCM (Authenticated Encryption)">
+                                <option value="aes-256-gcm">AES-256-GCM (Recommended - Authenticated)</option>
+                                <option value="aes-192-gcm">AES-192-GCM (Authenticated)</option>
+                                <option value="aes-128-gcm">AES-128-GCM (Authenticated)</option>
+                            </optgroup>
+                            <optgroup label="AES-CTR (Stream Cipher)">
+                                <option value="aes-256-ctr">AES-256-CTR (Stream, Fast)</option>
+                                <option value="aes-192-ctr">AES-192-CTR (Stream, Fast)</option>
+                                <option value="aes-128-ctr">AES-128-CTR (Stream, Fast)</option>
+                            </optgroup>
+                            <optgroup label="AES-CFB (Stream Cipher)">
+                                <option value="aes-256-cfb">AES-256-CFB (Stream)</option>
+                                <option value="aes-192-cfb">AES-192-CFB (Stream)</option>
+                                <option value="aes-128-cfb">AES-128-CFB (Stream)</option>
+                            </optgroup>
+                            <optgroup label="AES-OFB (Stream Cipher)">
+                                <option value="aes-256-ofb">AES-256-OFB (Stream)</option>
+                                <option value="aes-192-ofb">AES-192-OFB (Stream)</option>
+                                <option value="aes-128-ofb">AES-128-OFB (Stream)</option>
+                            </optgroup>
+                            <optgroup label="Modern Algorithms">
+                                <option value="chacha20">ChaCha20-Poly1305 (Modern, Authenticated, Very Fast)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="password-input">
+                        <label for="encryptPassword">Password:</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="encryptPassword" placeholder="Enter password (min 8 characters)" />
+                            <button type="button" class="toggle-password" onclick="togglePassword('encryptPassword')">👁️</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="encryptFile()">
+                        <span class="btn-text">Encrypt File</span>
+                        <span class="btn-loader" style="display: none;">⏳</span>
+                    </button>
+                    <div class="message" id="encryptMessage"></div>
+                </div>
+            </div>
+
+            <!-- Decryption Section -->
+            <div class="card decrypt-card">
+                <div class="card-header">
+                    <h2>🔓 Decrypt File</h2>
+                </div>
+                <div class="card-body">
+                    <div class="file-upload-area" id="decryptUploadArea">
+                        <input type="file" id="decryptFile" class="file-input" accept=".enc" />
+                        <div class="upload-content">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 16 12 21 17 16"></polyline>
+                                <line x1="12" y1="21" x2="12" y2="9"></line>
+                            </svg>
+                            <p>Click to select encrypted file (.enc)</p>
+                            <span class="file-name" id="decryptFileName"></span>
+                        </div>
+                    </div>
+                    <div class="algorithm-select">
+                        <label for="decryptAlgorithm">Decryption Algorithm:</label>
+                        <select id="decryptAlgorithm" class="algorithm-select-input">
+                            <option value="auto">Auto-Detect (Recommended)</option>
+                            <optgroup label="AES-CBC (Block Cipher)">
+                                <option value="aes-256-cbc">AES-256-CBC</option>
+                                <option value="aes-192-cbc">AES-192-CBC</option>
+                                <option value="aes-128-cbc">AES-128-CBC</option>
+                            </optgroup>
+                            <optgroup label="AES-GCM (Authenticated Encryption)">
+                                <option value="aes-256-gcm">AES-256-GCM</option>
+                                <option value="aes-192-gcm">AES-192-GCM</option>
+                                <option value="aes-128-gcm">AES-128-GCM</option>
+                            </optgroup>
+                            <optgroup label="AES-CTR (Stream Cipher)">
+                                <option value="aes-256-ctr">AES-256-CTR</option>
+                                <option value="aes-192-ctr">AES-192-CTR</option>
+                                <option value="aes-128-ctr">AES-128-CTR</option>
+                            </optgroup>
+                            <optgroup label="AES-CFB (Stream Cipher)">
+                                <option value="aes-256-cfb">AES-256-CFB</option>
+                                <option value="aes-192-cfb">AES-192-CFB</option>
+                                <option value="aes-128-cfb">AES-128-CFB</option>
+                            </optgroup>
+                            <optgroup label="AES-OFB (Stream Cipher)">
+                                <option value="aes-256-ofb">AES-256-OFB</option>
+                                <option value="aes-192-ofb">AES-192-OFB</option>
+                                <option value="aes-128-ofb">AES-128-OFB</option>
+                            </optgroup>
+                            <optgroup label="Modern Algorithms">
+                                <option value="chacha20">ChaCha20-Poly1305</option>
+                            </optgroup>
+                        </select>
+                        <div class="algorithm-hint" id="decryptAlgorithmHint" style="display: none;">
+                            <span class="hint-text" id="decryptAlgorithmHintText"></span>
+                        </div>
+                    </div>
+                    <div class="password-input">
+                        <label for="decryptPassword">Password:</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="decryptPassword" placeholder="Enter decryption password" />
+                            <button type="button" class="toggle-password" onclick="togglePassword('decryptPassword')">👁️</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="decryptFile()">
+                        <span class="btn-text">Decrypt File</span>
+                        <span class="btn-loader" style="display: none;">⏳</span>
+                    </button>
+                    <div class="message" id="decryptMessage"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Malware Analysis Sandbox Section -->
+        <div class="sandbox-section">
+            <div class="card sandbox-card">
+                <div class="card-header">
+                    <h2>🛡️ Malware Analysis Sandbox</h2>
+                    <p class="card-subtitle">Secure environment to analyze suspicious files</p>
+                </div>
+                <div class="card-body">
+                    <div class="file-upload-area" id="sandboxUploadArea">
+                        <input type="file" id="sandboxFile" class="file-input" />
+                        <div class="upload-content">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p>Click to select suspicious file for analysis</p>
+                            <span class="file-name" id="sandboxFileName"></span>
+                        </div>
+                    </div>
+                    <div class="sandbox-controls">
+                        <div class="timeout-input">
+                            <label for="sandboxTimeout">Analysis Timeout (seconds):</label>
+                            <input type="number" id="sandboxTimeout" value="30" min="10" max="120" />
+                        </div>
+                        <button class="btn btn-warning" onclick="startAnalysis()">
+                            <span class="btn-text">🔍 Start Analysis</span>
+                            <span class="btn-loader" style="display: none;">⏳</span>
+                        </button>
+                    </div>
+                    <div class="message" id="sandboxMessage"></div>
+                    
+                    <!-- Analysis Results -->
+                    <div class="analysis-results" id="analysisResults" style="display: none;">
+                        <div class="results-header">
+                            <h3>📊 Analysis Results</h3>
+                            <button class="btn-small" onclick="clearAnalysis()">Clear</button>
+                        </div>
+                        <div class="results-summary" id="resultsSummary"></div>
+                        <div class="logs-container">
+                            <h4>📝 Behavior Logs</h4>
+                            <div class="logs-scroll" id="logsScroll">
+                                <div class="log-entry" id="logTemplate" style="display: none;">
+                                    <span class="log-time"></span>
+                                    <span class="log-category"></span>
+                                    <span class="log-message"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
